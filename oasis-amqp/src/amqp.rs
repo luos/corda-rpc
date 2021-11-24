@@ -20,7 +20,7 @@ pub struct Frame<'a> {
 }
 
 impl<'a> Frame<'a> {
-    pub(crate) fn decode(doff: u8, buf: &'a [u8]) -> Result<Self, crate::Error> {
+    pub fn decode(doff: u8, buf: &'a [u8]) -> Result<Self, crate::Error> {
         let (channel, buf) = buf.split_at(2);
         let channel =
             u16::from_be_bytes(channel.try_into().map_err(|_| crate::Error::InvalidData)?);
