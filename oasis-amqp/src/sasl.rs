@@ -44,6 +44,7 @@ pub struct Outcome<'a> {
 }
 
 #[derive(Debug, Deserialize, PartialEq, Serialize)]
+#[repr(u8)]
 pub enum Code {
     Ok,
     Auth,
