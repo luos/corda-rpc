@@ -1,7 +1,7 @@
 use oasis_amqp_macros::amqp;
 use serde::{self, Deserialize, Serialize};
 use serde_bytes::Bytes;
-
+use serde_repr::*;
 use crate::Described;
 
 #[amqp]
@@ -43,7 +43,7 @@ pub struct Outcome<'a> {
     pub additional_data: Option<&'a Bytes>,
 }
 
-#[derive(Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Debug, Deserialize, PartialEq, Serialize_repr)]
 #[repr(u8)]
 pub enum Code {
     Ok = 0,
