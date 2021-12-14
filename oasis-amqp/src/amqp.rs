@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use std::convert::TryInto;
 use std::fmt;
 use std::marker::PhantomData;
-
+use serde_repr::*;
 use oasis_amqp_macros::amqp;
 use serde::{self, ser::SerializeTuple, Deserialize, Serialize};
 use serde_bytes::Bytes;
@@ -422,9 +422,9 @@ pub enum ExpiryPolicy {
 
 #[derive(Debug, Deserialize, PartialEq, Serialize)]
 pub enum SenderSettleMode {
-    Unsettled,
-    Settled,
-    Mixed,
+    Unsettled = 0,
+    Settled = 1,
+    Mixed = 2,
 }
 
 #[derive(Debug, Deserialize, PartialEq, Serialize)]
@@ -593,11 +593,11 @@ impl<'a, 'de: 'a> Deserialize<'de> for Any<'a> {
             where
                 A: serde::de::EnumAccess<'de>,
             {
+                
                 let val = match serde::de::EnumAccess::variant(data) {
                     Ok(val) => val,
                     Err(err) => return Err(err),
                 };
-
                 match val {
                     (AnyType::None, variant) => Result::map(
                         serde::de::VariantAccess::newtype_variant::<()>(variant),

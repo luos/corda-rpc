@@ -479,14 +479,19 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
         V: Visitor<'de>,
     {
         if !self.any {
-            match self.peek_constructor()? {
+            let constructor = self.peek_constructor();
+            match constructor? {
                 0x56 | 0x41 | 0x42 => visitor.visit_u64(if self.parse_bool()? { 1 } else { 0 }),
                 0x50 => {
                     self.assume(0x50)?;
                     let id = self.next()?;
                     visitor.visit_u64(id as u64)
                 }
-                0x43 | 0x52 | 0x70 => visitor.visit_u64(self.read_u32()? as u64),
+                0x43 => {
+                    self.assume(0x43)?;
+                    visitor.visit_u8(0)
+                },
+                0x52 | 0x70 => visitor.visit_u64(self.read_u32()? as u64),
                 0x44 | 0x53 | 0x80 => self.deserialize_u64(visitor),
                 0xa3 | 0xb3 => self.deserialize_bytes(visitor),
                 t => Err(InvalidFormatCode::new("variant identifier", t as u8).into()),
