@@ -296,7 +296,7 @@ impl Serialize for Role {
 }
 
 #[amqp(descriptor("amqp:source:list", 0x0000_0000_0000_0028))]
-#[derive(Debug, Default, PartialEq, Serialize)]
+#[derive(Debug, Default, PartialEq, Serialize, Clone)]
 pub struct Source<'a> {
     pub address: Option<&'a str>,
     pub durable: Option<TerminusDurability>,
@@ -312,7 +312,7 @@ pub struct Source<'a> {
     pub capabilities: Option<Vec<&'a str>>,
 }
 
-#[derive(Debug, Deserialize, PartialEq)]
+#[derive(Debug, Deserialize, PartialEq, Clone)]
 pub enum TerminusDurability {
     None,
     Configuration,
@@ -338,7 +338,7 @@ impl Serialize for TerminusDurability {
     }
 }
 
-#[derive(Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Debug, Deserialize, PartialEq, Serialize, Clone)]
 #[serde(rename_all = "kebab-case")]
 pub enum DistributionMode {
     Move,
@@ -359,7 +359,7 @@ pub enum DeliveryState {
 }
 
 #[amqp]
-#[derive(Debug, PartialEq, Serialize)]
+#[derive(Debug, PartialEq, Serialize, Clone)]
 #[serde(rename_all = "kebab-case")]
 pub enum Outcome {
     Received(Received),
@@ -371,35 +371,35 @@ pub enum Outcome {
 }
 
 #[amqp(descriptor("amqp:received:list", 0x0000_0000_0000_0023))]
-#[derive(Debug, PartialEq, Serialize)]
+#[derive(Debug, PartialEq, Serialize, Clone)]
 pub struct Received {}
 
 #[amqp(descriptor("amqp:accepted:list", 0x0000_0000_0000_0024))]
-#[derive(Debug, PartialEq, Serialize)]
+#[derive(Debug, PartialEq, Serialize, Clone)]
 pub struct Accepted {}
 
 #[amqp(descriptor("amqp:rejected:list", 0x0000_0000_0000_0025))]
-#[derive(Debug, PartialEq, Serialize)]
+#[derive(Debug, PartialEq, Serialize, Clone)]
 pub struct Rejected {}
 
 #[amqp(descriptor("amqp:released:list", 0x0000_0000_0000_0026))]
-#[derive(Debug, PartialEq, Serialize)]
+#[derive(Debug, PartialEq, Serialize, Clone)]
 pub struct Released {}
 
 #[amqp(descriptor("amqp:modified:list", 0x0000_0000_0000_0027))]
-#[derive(Debug, PartialEq, Serialize)]
+#[derive(Debug, PartialEq, Serialize, Clone)]
 pub struct Modified {}
 
 #[amqp(descriptor("amqp:declared:list", 0x0000_0000_0000_0033))]
-#[derive(Debug, PartialEq, Serialize)]
+#[derive(Debug, PartialEq, Serialize, Clone)]
 pub struct Declared {}
 
 #[amqp(descriptor("amqp:transactional-state:list", 0x0000_0000_0000_0034))]
-#[derive(Debug, PartialEq, Serialize)]
+#[derive(Debug, PartialEq, Serialize, Clone)]
 pub struct TransactionalState {}
 
 #[amqp(descriptor("amqp:target:list", 0x0000_0000_0000_0029))]
-#[derive(Debug, Default, PartialEq, Serialize)]
+#[derive(Debug, PartialEq, Serialize, Clone)]
 pub struct Target<'a> {
     pub address: Option<&'a str>,
     pub durable: Option<u32>,
@@ -411,7 +411,7 @@ pub struct Target<'a> {
     pub capabilities: Option<Vec<&'a str>>,
 }
 
-#[derive(Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Debug, Deserialize, PartialEq, Serialize, Clone)]
 #[serde(rename_all = "kebab-case")]
 pub enum ExpiryPolicy {
     LinkDetach,
@@ -420,14 +420,14 @@ pub enum ExpiryPolicy {
     Never,
 }
 
-#[derive(Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Debug, Deserialize, PartialEq, Serialize, Clone)]
 pub enum SenderSettleMode {
     Unsettled = 0,
     Settled = 1,
     Mixed = 2,
 }
 
-#[derive(Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Debug, Deserialize, PartialEq, Serialize, Clone)]
 pub enum ReceiverSettleMode {
     First,
     Second,
